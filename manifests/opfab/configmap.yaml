@@ -26,3 +26,6 @@ data:
           expire-claim: exp
           groups:
             mode: OPERATOR_FABRIC
+        resourceserver:
+          jwt:
+            jwk-set-uri: http://keycloak:8080/realms/dev/protocol/openid-connect/certs
