@@ -22,7 +22,7 @@ spec:
         command: ['sh', '-c', 'until nc -z rabbitmq 5672; do echo waiting for rabbitmq; sleep 2; done']
       containers:
       - name: cards-publication
-        image: lfeoperatorfabric/of-cards-publication-service:4.11.1.RELEASE
+        image: lfeoperatorfabric/of-cards-publication-service:4.10.0.RELEASE
         ports:
         - containerPort: 2102
         volumeMounts:

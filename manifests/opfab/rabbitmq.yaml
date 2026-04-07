@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: rabbitmq
-        image: lfeoperatorfabric/of-rabbitmq:4.11.1.RELEASE
+        image: lfeoperatorfabric/of-rabbitmq:4.10.0.RELEASE
         ports:
         - containerPort: 5672
         - containerPort: 15672

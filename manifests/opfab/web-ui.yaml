@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: web-ui
-        image: lfeoperatorfabric/of-web-ui:4.11.1.RELEASE
+        image: lfeoperatorfabric/of-web-ui:4.10.0.RELEASE
         ports:
         - containerPort: 80
         readinessProbe:
