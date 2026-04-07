@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: opfab-common-config
+  namespace: opfab
+data:
+  common.yml: |
+    operatorfabric:
+      mongodb:
+        uri: mongodb://mongodb:27017/operator-fabric
+      rabbitmq:
+        host: rabbitmq
+        port: 5672
+        username: guest
+        password: guest
+      security:
+        oauth2:
+          flow: PASSWORD
+          provider: keycloak
+          base-url: http://keycloak:8080
+          realm: dev
+          client-id: opfab-client
+          client-secret: opfab-client-secret
+        jwt:
+          login-claim: preferred_username
+          expire-claim: exp
+          groups:
+            mode: OPERATOR_FABRIC

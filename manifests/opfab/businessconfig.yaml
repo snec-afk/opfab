@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: businessconfig
+  namespace: opfab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: businessconfig
+  template:
+    metadata:
+      labels:
+        app: businessconfig
+    spec:
+      initContainers:
+      - name: wait-for-mongodb
+        image: busybox
+        command: ['sh', '-c', 'until nc -z mongodb 27017; do echo waiting for mongodb; sleep 2; done']
+      containers:
+      - name: businessconfig
+        image: lfeoperatorfabric/of-businessconfig-service:4.11.1.RELEASE
+        ports:
+        - containerPort: 2100
+        volumeMounts:
+        - name: config
+          mountPath: /config
+        env:
+        - name: SPRING_CONFIG_ADDITIONAL_LOCATION
+          value: /config/
+      volumes:
+      - name: config
+        configMap:
+          name: opfab-common-config
+          items:
+          - key: common.yml
+            path: common.yml
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: businessconfig
+  namespace: opfab
+spec:
+  selector:
+    app: businessconfig
+  ports:
+  - port: 2100
+    targetPort: 2100

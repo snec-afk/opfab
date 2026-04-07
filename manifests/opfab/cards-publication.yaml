@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cards-publication
+  namespace: opfab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cards-publication
+  template:
+    metadata:
+      labels:
+        app: cards-publication
+    spec:
+      initContainers:
+      - name: wait-for-mongodb
+        image: busybox
+        command: ['sh', '-c', 'until nc -z mongodb 27017; do echo waiting for mongodb; sleep 2; done']
+      - name: wait-for-rabbitmq
+        image: busybox
+        command: ['sh', '-c', 'until nc -z rabbitmq 5672; do echo waiting for rabbitmq; sleep 2; done']
+      containers:
+      - name: cards-publication
+        image: lfeoperatorfabric/of-cards-publication-service:4.11.1.RELEASE
+        ports:
+        - containerPort: 2102
+        volumeMounts:
+        - name: config
+          mountPath: /config
+        env:
+        - name: SPRING_CONFIG_ADDITIONAL_LOCATION
+          value: /config/
+      volumes:
+      - name: config
+        configMap:
+          name: opfab-common-config
+          items:
+          - key: common.yml
+            path: common.yml
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cards-publication
+  namespace: opfab
+spec:
+  selector:
+    app: cards-publication
+  ports:
+  - port: 2102
+    targetPort: 2102
