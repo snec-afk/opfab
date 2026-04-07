@@ -21,11 +21,11 @@ data:
           realm: dev
           client-id: opfab-client
           client-secret: opfab-client-secret
+          resourceserver:
+            jwt:
+              jwk-set-uri: http://keycloak:8080/realms/dev/protocol/openid-connect/certs
         jwt:
           login-claim: preferred_username
           expire-claim: exp
           groups:
             mode: OPERATOR_FABRIC
-        resourceserver:
-          jwt:
-            jwk-set-uri: http://keycloak:8080/realms/dev/protocol/openid-connect/certs
