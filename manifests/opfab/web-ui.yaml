@@ -20,7 +20,7 @@ spec:
         - containerPort: 80
         readinessProbe:
           httpGet:
-            path: /ui/
+            path: /
             port: 80
           initialDelaySeconds: 10
           periodSeconds: 5
